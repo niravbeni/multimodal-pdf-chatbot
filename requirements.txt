@@ -12,8 +12,8 @@ pillow
 PyPDF2
 pysqlite3-binary
 
-# PDF processing with minimal dependencies
-unstructured[local-inference]
+# PDF processing
+unstructured[pdf]
 pdf2image
 pytesseract
 python-magic
@@ -25,6 +25,7 @@ filetype
 # tesseract-ocr
 # poppler-utils
 # libmagic1
+# libgl1-mesa-glx
 
 # Remove these problematic dependencies
 # python-poppler
