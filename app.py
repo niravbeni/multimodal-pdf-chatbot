@@ -3,6 +3,8 @@ Multimodal PDF Chat - Main Application
 """
 import sys
 import os
+import time
+import shutil
 
 # SQLite fix for ChromaDB
 try:
@@ -429,7 +431,34 @@ def inject_css():
         </style>
     """
 
+def cleanup_temp_files(pdf_paths):
+    """Clean up temporary PDF files after processing"""
+    for path in pdf_paths:
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+        except Exception as e:
+            st.warning(f"Could not remove temporary file {path}: {e}")
+
+def cleanup_old_collections():
+    """Clean up ChromaDB collections older than 24 hours"""
+    chroma_dir = ensure_chroma_directory()
+    current_time = time.time()
+    
+    try:
+        for collection_dir in os.listdir(chroma_dir):
+            collection_path = os.path.join(chroma_dir, collection_dir)
+            if os.path.isdir(collection_path):
+                # Check if directory is older than 24 hours
+                if current_time - os.path.getctime(collection_path) > 86400:  # 24 hours in seconds
+                    shutil.rmtree(collection_path)
+    except Exception as e:
+        st.warning(f"Could not clean up old collections: {e}")
+
 def main():
+    # Add cleanup of old collections at start
+    cleanup_old_collections()
+    
     # Set up Streamlit page configuration
     st.set_page_config(
         page_title="Multimodal PDF Chat",
@@ -633,6 +662,9 @@ def main():
                     st.session_state.upload_memory = memory
                     st.session_state.upload_complete = True
                     
+                    # Cleanup
+                    cleanup_temp_files(pdf_paths)
+                    
                     # Clear loading message before rerun
                     loading_message.empty()
                     st.session_state.files_processed = True
@@ -640,6 +672,7 @@ def main():
                     st.rerun()
                     
                 except Exception as e:
+                    cleanup_temp_files(pdf_paths)  # Clean up even if processing fails
                     error_msg = f"Error processing documents: {str(e)}"
                     st.error(error_msg)
                     
@@ -679,10 +712,10 @@ def main():
                     loading_message.empty()
                     st.rerun()
 
-        # Add disclaimer at the bottom of sidebar with more spacing
-        st.markdown("<br>" * 3, unsafe_allow_html=True)  # Increased vertical space
+        # Add disclaimer at the bottom of sidebar
+        st.markdown("<br>" * 3, unsafe_allow_html=True)
         st.markdown("""
-        <div style='font-size: 0.7rem; color: #666; margin-top: 3rem;'>  <!-- Reduced font size from 0.8rem to 0.7rem -->
+        <div style='font-size: 0.7rem; color: #666; margin-top: 3rem;'>
         <p><em>This application uses ChatGPT. ChatGPT can make mistakes. <br>OpenAI doesn't use IDEO workspace data to train its models.</em></p>
         </div>
         """, unsafe_allow_html=True)
