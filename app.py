@@ -578,17 +578,19 @@ def main():
                     
                     # Save uploaded files
                     pdf_paths = [save_uploaded_file(pdf) for pdf in pdf_docs]
-                    st.write(f"PDF paths: {pdf_paths}")  # Debug info
+                    st.write("📄 Processing files:", ", ".join(path.split('/')[-1] for path in pdf_paths))
                     
                     # Configure models - use cached versions
                     model = get_openai_model("gpt-4o-mini")
                     embeddings = get_embeddings()
                     
                     # Process documents without duplicate spinner
-                    st.write(f"Unstructured available: {UNSTRUCTURED_AVAILABLE}")  # Debug info
+                    unstructured_status = "✅" if UNSTRUCTURED_AVAILABLE else "❌"
+                    st.write(f"Unstructured API: {unstructured_status}")
+                    
                     if UNSTRUCTURED_AVAILABLE:
                         try:
-                            st.write("Attempting to use Unstructured...")  # Debug info
+                            st.write("🔄 Using Unstructured for processing...")
                             texts, tables, images = process_pdfs_with_unstructured(pdf_paths)
                             
                             if texts or tables or images:
@@ -676,6 +678,14 @@ def main():
                     # Clear loading message before rerun
                     loading_message.empty()
                     st.rerun()
+
+        # Add disclaimer at the bottom of sidebar with more spacing
+        st.markdown("<br>" * 3, unsafe_allow_html=True)  # Increased vertical space
+        st.markdown("""
+        <div style='font-size: 0.7rem; color: #666; margin-top: 3rem;'>  <!-- Reduced font size from 0.8rem to 0.7rem -->
+        <p><em>This application uses ChatGPT. ChatGPT can make mistakes. <br>OpenAI doesn't use IDEO workspace data to train its models.</em></p>
+        </div>
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
