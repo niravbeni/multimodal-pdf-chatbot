@@ -12,10 +12,12 @@ from langchain.schema.document import Document
 # Check if Unstructured is available
 try:
     from unstructured.partition.pdf import partition_pdf
+    import pytesseract
+    import pdf2image
     UNSTRUCTURED_AVAILABLE = True
 except Exception as e:
     UNSTRUCTURED_AVAILABLE = False
-    print(f"Unstructured not available: {e}")
+    print(f"Advanced PDF processing not available: {str(e)}")
 
 def process_pdfs_with_unstructured(pdf_paths):
     """Process PDFs using Unstructured following the example approach"""
@@ -68,8 +70,8 @@ def process_pdfs_with_unstructured(pdf_paths):
                 all_images.extend(pdf_images)
                 
             except Exception as e:
-                error_msg = f"Error processing {os.path.basename(pdf_path)}: {str(e)}"
-                st.error(error_msg)
+                print(f"Error in unstructured processing: {str(e)}")
+                return [], [], []  # Return empty lists to trigger fallback
         
         status.update(label=f"PDF processing complete! Extracted {len(all_texts)} text chunks, {len(all_tables)} tables, {len(all_images)} images.", state="complete")
     
