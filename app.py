@@ -578,17 +578,21 @@ def main():
                     
                     # Save uploaded files
                     pdf_paths = [save_uploaded_file(pdf) for pdf in pdf_docs]
+                    st.write(f"PDF paths: {pdf_paths}")  # Debug info
                     
                     # Configure models - use cached versions
                     model = get_openai_model("gpt-4o-mini")
                     embeddings = get_embeddings()
                     
                     # Process documents without duplicate spinner
+                    st.write(f"Unstructured available: {UNSTRUCTURED_AVAILABLE}")  # Debug info
                     if UNSTRUCTURED_AVAILABLE:
                         try:
+                            st.write("Attempting to use Unstructured...")  # Debug info
                             texts, tables, images = process_pdfs_with_unstructured(pdf_paths)
                             
                             if texts or tables or images:
+                                st.write(f"Extracted: {len(texts)} texts, {len(tables)} tables, {len(images)} images")  # Debug info
                                 # Summarize elements
                                 text_summaries, table_summaries, image_summaries = summarize_elements(
                                     texts, tables, images, model

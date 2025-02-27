@@ -8,26 +8,32 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.document import Document
+import logging
+
+# At the top of the file, add debug logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Check if Unstructured is available
 try:
     from unstructured.partition.pdf import partition_pdf
     UNSTRUCTURED_AVAILABLE = True
+    logger.info("Unstructured successfully imported")
 except Exception as e:
     UNSTRUCTURED_AVAILABLE = False
-    print(f"Advanced PDF processing not available: {str(e)}")
+    logger.error(f"Failed to import Unstructured: {str(e)}")
 
 def process_pdfs_with_unstructured(pdf_paths):
     """Process PDFs using Unstructured following the example approach"""
+    logger.info(f"Starting PDF processing with Unstructured. Paths: {pdf_paths}")
     all_texts = []
     all_tables = []
     all_images = []
     
     with st.status("Processing PDFs...") as status:
         for i, pdf_path in enumerate(pdf_paths):
-            status.update(label=f"Processing PDF {i+1}/{len(pdf_paths)}: {os.path.basename(pdf_path)}")
-            
             try:
+                logger.info(f"Processing file {i+1}/{len(pdf_paths)}: {pdf_path}")
                 # Extract content using the same parameters as the example
                 chunks = partition_pdf(
                     filename=pdf_path,
@@ -40,6 +46,7 @@ def process_pdfs_with_unstructured(pdf_paths):
                     combine_text_under_n_chars=2000,
                     new_after_n_chars=6000,
                 )
+                logger.info(f"Successfully extracted {len(chunks)} chunks from {pdf_path}")
                 
                 # Separate chunks by type exactly like the example
                 pdf_tables = []
