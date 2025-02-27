@@ -9,7 +9,16 @@ openai
 chromadb
 pdfminer.six
 pi-heif
-unstructured[all]
 pillow
 PyPDF2
 pysqlite3-binary
+
+# Unstructured and its dependencies
+unstructured
+pdf2image
+pytesseract
+python-magic
+python-poppler
+nltk
+markdown
+filetype

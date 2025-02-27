@@ -581,27 +581,33 @@ def main():
                     
                     # Process documents without duplicate spinner
                     if UNSTRUCTURED_AVAILABLE:
-                        texts, tables, images = process_pdfs_with_unstructured(pdf_paths)
-                        
-                        if texts or tables or images:
-                            # Summarize elements
-                            text_summaries, table_summaries, image_summaries = summarize_elements(
-                                texts, tables, images, model
-                            )
+                        try:
+                            texts, tables, images = process_pdfs_with_unstructured(pdf_paths)
                             
-                            # Create retriever and chain
-                            retriever = create_multimodal_retriever(
-                                texts, tables, images,
-                                text_summaries, table_summaries, image_summaries,
-                                embeddings
-                            )
-                        else:
-                            st.warning("No content extracted with Unstructured. Falling back to PyPDF2.")
+                            if texts or tables or images:
+                                # Summarize elements
+                                text_summaries, table_summaries, image_summaries = summarize_elements(
+                                    texts, tables, images, model
+                                )
+                                
+                                # Create retriever and chain
+                                retriever = create_multimodal_retriever(
+                                    texts, tables, images,
+                                    text_summaries, table_summaries, image_summaries,
+                                    embeddings
+                                )
+                            else:
+                                st.warning("No content extracted. Falling back to PyPDF2.")
+                                documents = get_pdf_text_fallback(pdf_paths)
+                                text_chunks, summaries = process_fallback_documents(documents, model)
+                                retriever = create_fallback_retriever(text_chunks, summaries, embeddings)
+                        except Exception as e:
+                            st.warning(f"Error with Unstructured processing: {str(e)}. Falling back to PyPDF2.")
                             documents = get_pdf_text_fallback(pdf_paths)
                             text_chunks, summaries = process_fallback_documents(documents, model)
                             retriever = create_fallback_retriever(text_chunks, summaries, embeddings)
                     else:
-                        st.warning("Unstructured not available. Using PyPDF2 for text extraction.")
+                        st.info("Using PyPDF2 for text extraction.")
                         documents = get_pdf_text_fallback(pdf_paths)
                         text_chunks, summaries = process_fallback_documents(documents, model)
                         retriever = create_fallback_retriever(text_chunks, summaries, embeddings)
