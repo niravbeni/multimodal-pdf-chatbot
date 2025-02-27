@@ -1,15 +1,16 @@
 """
 Multimodal PDF Chat - Main Application
 """
+import sys  # Move sys import to top
+import os
+
 # SQLite fix for ChromaDB
 try:
     import pysqlite3
-    import sys
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
     print("Using default sqlite3")
 
-import os
 import uuid
 import warnings
 import traceback
