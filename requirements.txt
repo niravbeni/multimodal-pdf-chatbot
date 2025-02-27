@@ -1,0 +1,14 @@
+streamlit
+python-dotenv
+langchain
+langchain-openai
+langchain-community
+langchain-core
+langchain-chroma
+openai
+chromadb
+pdfminer.six
+pi-heif
+unstructured[all]
+pillow
+PyPDF2

@@ -1,0 +1,22 @@
+# Environment and secrets
+.env
+.streamlit/secrets.toml
+.venv
+venv/
+env/
+
+# Temporary and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store
+chroma_db/
+temp_pdf_files/
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/ 
