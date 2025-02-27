@@ -7,7 +7,8 @@ import os
 # SQLite fix for ChromaDB
 try:
     import pysqlite3
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+    if 'sqlite3' in sys.modules:
+        sys.modules['sqlite3'] = pysqlite3
 except ImportError:
     print("Using default sqlite3")
 
