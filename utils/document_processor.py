@@ -12,8 +12,6 @@ from langchain.schema.document import Document
 # Check if Unstructured is available
 try:
     from unstructured.partition.pdf import partition_pdf
-    import pytesseract
-    import pdf2image
     UNSTRUCTURED_AVAILABLE = True
 except Exception as e:
     UNSTRUCTURED_AVAILABLE = False
