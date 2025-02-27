@@ -12,8 +12,8 @@ pillow
 PyPDF2
 pysqlite3-binary
 
-# Basic PDF processing - minimal install
-unstructured
+# PDF processing with minimal dependencies
+unstructured[local-inference]
 pdf2image
 pytesseract
 python-magic
