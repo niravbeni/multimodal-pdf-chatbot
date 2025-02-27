@@ -1,8 +1,12 @@
 """
 Multimodal PDF Chat - Main Application
 """
-import os
+# SQLite fix for ChromaDB
+__import__('pysqlite3')
 import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+import os
 import uuid
 import warnings
 import traceback

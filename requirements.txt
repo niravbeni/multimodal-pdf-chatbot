@@ -12,3 +12,4 @@ pi-heif
 unstructured[all]
 pillow
 PyPDF2
+pysqlite3-binary
