@@ -12,18 +12,16 @@ pillow
 PyPDF2
 pysqlite3-binary
 
-# Unstructured with minimal dependencies
+# Basic PDF processing
 unstructured[base]
-# PDF processing essentials
 pdf2image
 pytesseract
-python-magic-bin
+python-magic
 nltk
 markdown
 filetype
 
-# System dependencies (for apt-get)
-# packages.txt needed with:
+# System dependencies handled by packages.txt:
 # tesseract-ocr
 # poppler-utils
 # libmagic1
