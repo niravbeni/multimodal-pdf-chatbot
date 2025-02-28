@@ -30,14 +30,17 @@ def load_css():
         # Fallback CSS if file can't be loaded
         return """
         .chat-message {
-            padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex;
+            padding: 1.5rem; 
+            margin-bottom: 1rem; 
+            display: flex;
             position: relative;
         }
         .chat-message.user {
-            background-color: #0095ff20
+            background-color: white;
         }
         .chat-message.bot {
-            background-color: #E6E6FA
+            background-color: #f7f7f8;
+            position: relative;
         }
         .chat-message .avatar {
           width: 20%;
@@ -52,13 +55,6 @@ def load_css():
           width: 80%;
           padding: 0 1.5rem;
           color: #000;
-        }
-        .debug-info {
-            background-color: #f0f2f6;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            overflow-x: auto;
         }
         """
 

@@ -340,7 +340,7 @@ def on_file_upload():
 
 def handle_mode_change():
     """Handle mode change with proper state management"""
-    new_mode = "preloaded" if st.session_state.mode_radio == "Use Preloaded Collection" else "upload"
+    new_mode = "preloaded" if st.session_state.mode_radio == "Use Trend Report Collection" else "upload"
     
     if new_mode != st.session_state.mode:
         if new_mode == "upload":
@@ -395,7 +395,6 @@ def inject_css():
             /* Basic chat message styling */
             [data-testid="stChatMessage"] {
                 padding: 2rem 0;
-                border-bottom: 1px solid #f0f0f0;
             }
             
             /* Style user messages */
@@ -406,6 +405,7 @@ def inject_css():
             /* Style assistant messages */
             [data-testid="stChatMessage"][data-chat-message-user-name="assistant"] {
                 background-color: #f7f7f8;
+                position: relative;
             }
             
             /* Add padding to chat message container */
@@ -716,7 +716,7 @@ def main():
         st.markdown("<br>" * 3, unsafe_allow_html=True)
         st.markdown("""
         <div style='font-size: 0.7rem; color: #666; margin-top: 3rem;'>
-        <p><em>This application uses ChatGPT. ChatGPT can make mistakes. <br>OpenAI doesn't use IDEO workspace data to train its models.</em></p>
+        <p><em>This application uses ChatGPT and can make mistakes. <br>OpenAI doesn't use IDEO workspace data to train its models.</em></p>
         </div>
         """, unsafe_allow_html=True)
 
