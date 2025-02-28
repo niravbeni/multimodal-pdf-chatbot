@@ -489,7 +489,7 @@ def main():
         # Add radio with key and on_change callback
         st.radio(
             "Choose mode:",
-            ["Use Preloaded Collection", "Upload Your Own PDFs"],
+            ["Use Trend Report Collection", "Upload Your Own PDFs"],
             key="mode_radio",
             index=0 if st.session_state.mode == "preloaded" else 1,
             on_change=handle_mode_change
@@ -505,7 +505,7 @@ def main():
     # Display appropriate status message based on mode
     if not st.session_state.processing_complete:
         if st.session_state.mode == "preloaded":
-            st.info("Please click 'Load Preloaded Collection' in the sidebar to get started.")
+            st.info("Please click 'Load Trend Report Collection' in the sidebar to get started.")
         else:
             st.info("Please upload and process your PDFs in the sidebar to get started.")
     else:
@@ -677,7 +677,7 @@ def main():
                     st.error(error_msg)
                     
         elif st.session_state.mode == "preloaded":
-            st.subheader("Preloaded Collection")
+            st.subheader("Trend Report Collection")
             
             # Information about the collection
             preprocessed_exists = os.path.exists(PREPROCESSED_COLLECTION_FILE)
@@ -687,11 +687,11 @@ def main():
                 st.code(f"./preprocessed_data/primary_collection.joblib")
             
             # Button to load the preloaded collection
-            load_button = st.button("Load Preloaded Collection")
+            load_button = st.button("Load Trend Report Collection")
             
             # Show success message after load button
             if st.session_state.processing_complete:
-                st.success(f"Successfully loaded preloaded collection!")
+                st.success(f"Successfully loaded trend report collection!")
             
             if load_button:
                 # Show loading message without spinner
